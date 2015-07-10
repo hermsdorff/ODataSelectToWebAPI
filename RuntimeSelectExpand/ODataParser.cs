@@ -29,7 +29,7 @@ namespace RuntimeSelectExpand
             var expandParameter = expandParameters.Split(',');
             expandParameter[0] = expandParameter[0].Replace(ExpandCommand, String.Empty);
 
-            foreach (var param in expandParameter)
+            foreach (var param in expandParameter.OrderBy(o => o))
             {
                 tree.AddCollection(param);
             }

@@ -88,7 +88,22 @@ namespace RuntimeSelectExpand
 
         public virtual void BuildType()
         {
-            throw new NotImplementedException();
+            if (Items.Count() == 0)
+            {
+                QueryType = ElementType;
+            }
+            else
+            {
+                var fields = new Dictionary<string, Type>();
+
+                foreach (var item in Items.Where(i=>i.ElementType != typeof(void)))
+                {
+                    item.BuildType();
+                    fields.Add(item.Name, item.QueryType);
+                }
+
+                QueryType = FlyWeightTypeFactory.New(fields);
+            }
         }
 
         public Type QueryType { get; protected set; }

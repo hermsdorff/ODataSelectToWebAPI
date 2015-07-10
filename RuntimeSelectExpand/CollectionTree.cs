@@ -1,6 +1,7 @@
 namespace RuntimeSelectExpand
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class CollectionTree : ExpressionTree
@@ -8,6 +9,19 @@ namespace RuntimeSelectExpand
         public CollectionTree(string property): base(property)
         {
             
+        }
+
+        public override void BuildType()
+        {
+            var fields = new Dictionary<string, Type>();
+
+            foreach (var item in Items.Where(i=>i.ElementType != typeof(void)))
+            {
+                item.BuildType();
+                fields.Add(item.Name, item.QueryType);
+            }
+
+            QueryType = FlyWeightTypeFactory.NewCollection(fields);
         }
 
         public override void Bind(Type type)

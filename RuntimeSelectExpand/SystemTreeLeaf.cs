@@ -36,7 +36,7 @@ namespace RuntimeSelectExpand
 
         public void BuildType()
         {
-            throw new NotImplementedException();
+            QueryType = ElementType;
         }
 
         public Type QueryType { get; protected set; }

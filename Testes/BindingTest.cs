@@ -214,7 +214,7 @@ namespace Testes
             Assert.AreEqual(3, tree.Items.Count());
             Assert.AreEqual(3, tree.Items.Single(i=>i.Name.Equals("Products")).Items.Count());
             Assert.IsInstanceOfType(tree.Items.Single(i=>i.Name.Equals("Products")), typeof(CollectionTree));
-        }
+        } 
 
         [TestMethod]
         public void SelectPropertiesOfAnExpandedCollection()
