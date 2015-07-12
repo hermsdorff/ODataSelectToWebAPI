@@ -43,25 +43,23 @@ namespace Testes
         public void ExecuteQueryOverACollectionWithComplexProperty()
         {
             // arrange
-            const string Query = "$select=Id,Manufacturer/Name";
+            const string Query = "$select=Name,Owner/Name,Owner/Contact/Email";
             var parser = new ODataParser();
             var tree = parser.Parse(Query);
-            tree.Bind(typeof(Product));
+            tree.Bind(typeof(Company));
             tree.BuildType();
 
-            var products = new List<Product>
+            var companies = new List<Company>
                 {
-                    new Product
-                        { Id = 1, Name = "C1", Manufacturer = new Manufacturer{Id = 1, Name="M1"}},
-                    new Product
-                        { Id = 2, Name = "C2", Manufacturer = new Manufacturer{Id = 1, Name="M2"}}
+                    new Company
+                        { Name = "C1", Owner = new Person { Name = "P1", Contact = new Contact{ Email = "user@email.com"}}}
                 };
 
             // act
-            var selection = DynamicSelection.Select(products.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Product].Select(t => new {Id:Int32;Manufacturer:{Name:String}}() {Id = t.Id, Manufacturer = new {Name:String}() {Name = t.Manufacturer.Name}})";
+            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Company].Select(t => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t.Owner.Name, Contact = new {Email:String}() {Email = t.Owner.Contact.Email}}})";
             Assert.AreEqual(expression, selection.ToString());
         }
     }

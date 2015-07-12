@@ -48,8 +48,11 @@
     <Compile Include="BindingTest.cs" />
     <Compile Include="BuildingTypeTest.cs" />
     <Compile Include="Fakes\Category.cs" />
+    <Compile Include="Fakes\Company.cs" />
+    <Compile Include="Fakes\Contact.cs" />
     <Compile Include="Fakes\Manufacturer.cs" />
     <Compile Include="Fakes\Model.cs" />
+    <Compile Include="Fakes\Person.cs" />
     <Compile Include="Fakes\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryParseTest.cs" />
