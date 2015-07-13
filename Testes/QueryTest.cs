@@ -35,7 +35,7 @@ namespace Testes
             var selection = DynamicSelection.Select(categories.AsQueryable(), tree.QueryType);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Category].Select(t => new {Id:Int32}() {Id = t.Id})";
+            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Category].Select(t0 => new {Id:Int32}() {Id = t0.Id})";
             Assert.AreEqual(expression, selection.ToString());
         }
 
@@ -59,8 +59,33 @@ namespace Testes
             var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Company].Select(t => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t.Owner.Name, Contact = new {Email:String}() {Email = t.Owner.Contact.Email}}})";
+            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Company].Select(t0 => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t0.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t0.Owner.Name, Contact = new {Email:String}() {Email = t0.Owner.Contact.Email}}})";
             Assert.AreEqual(expression, selection.ToString());
         }
+
+        [TestMethod]
+        public void ExecuteQueryOverACollectionWithInnerCollection()
+        {
+            // arrange
+            const string Query = "$select=Name,Models/Name&$expand=Models";
+            var parser = new ODataParser();
+            var tree = parser.Parse(Query);
+            tree.Bind(typeof(Company));
+            tree.BuildType();
+
+            var companies = new List<Product>
+                {
+                    new Product
+                        { Name = "P1", Models = new List<Model>{new Model{ Id=1, Name="M1"}}}
+                };
+
+            // act
+            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
+
+            // assert
+            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Company].Select(t0 => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t0.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t0.Owner.Name, Contact = new {Email:String}() {Email = t0.Owner.Contact.Email}}})";
+            Assert.AreEqual(expression, selection.ToString());
+        }
+        
     }
 }
