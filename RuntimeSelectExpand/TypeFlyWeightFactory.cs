@@ -24,7 +24,19 @@ namespace RuntimeSelectExpand
             {
                 var className = String.Format(
                     "{{{0}}}",
-                    String.Join(";", fields.Select(field => String.Format("{0}:{1}", field.Key, field.Value.Name))));
+                    String.Join(
+                        ";",
+                        fields.Select(
+                            field =>
+                            String.Format(
+                                "{0}:{1}",
+                                field.Key,
+                                field.Value.GetGenericArguments().Count() > 0
+                                    ? String.Format(
+                                        "{0}<{1}>",
+                                        field.Value.Name,
+                                        String.Join("|", field.Value.GetGenericArguments().Select(s => s.Name)))
+                                    : field.Value.Name))));
 
                 if (!_builtTypes.ContainsKey(className))
                 {

@@ -5,7 +5,9 @@ using System.Text;
 
 namespace RuntimeSelectExpand
 {
+    using System.Collections;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     public class DynamicSelection
     {
@@ -22,44 +24,70 @@ namespace RuntimeSelectExpand
             }
         }
 
-        private static Expression BindProperties(IQueryable source, Expression sourceItem, Type type)
+        private static Expression BindProperties(Expression sourceItem, Type type)
         {
-            List<MemberBinding> bindings = new List<MemberBinding>();
+            var bindings = new List<MemberBinding>();
 
             BindSystemTypeProperties(type, sourceItem, bindings);
-            BindNonSystemTypeProperties(source, type, sourceItem, bindings);
+            BindNonSystemTypeProperties(type, sourceItem, bindings);
 
             return Expression.MemberInit(Expression.New(type.GetConstructor(Type.EmptyTypes)), bindings);
         }
 
         private static Expression BindQueryable(IQueryable source, Type type)
         {
-            ParameterExpression sourceItem = Expression.Parameter(source.ElementType, string.Format("t{0}", _id));
-            Expression selector = Expression.Lambda(BindProperties(source, sourceItem, type), sourceItem);
-
+            ParameterExpression sourceItem = Expression.Parameter(source.ElementType, String.Format("t{0}", _id));
             _id++;
+
+            Expression selector = Expression.Lambda(BindProperties(sourceItem, type), sourceItem);
 
             return Expression.Call(typeof(Queryable), "Select", new Type[] { source.ElementType, type },
                              Expression.Constant(source), selector);
         }
 
-        private static void BindNonSystemTypeProperties(IQueryable source, Type type, Expression sourceItem, List<MemberBinding> bindings)
+        private static void BindNonSystemTypeProperties(Type type, Expression sourceItem, List<MemberBinding> bindings)
         {
             foreach (var property in type.GetFields().Where(p => p.FieldType.Namespace != "System"))
             {
                 if (property.FieldType.Namespace != null && property.FieldType.Namespace.StartsWith("System.Collection"))
                 {
-                    var f = Expression.Property(sourceItem, property.Name);
-                    BindQueryable(null, property.FieldType);
+                    var selectExpression = BindEnumerable(sourceItem, property);
+
+                    var member = Expression.New(
+                        property.FieldType.GetConstructor(new[] { property.FieldType }),
+                        new [] { selectExpression });
+
+                    var innerMemberBind = Expression.Bind(property, member);
+                    bindings.Add(innerMemberBind);
                 }
                 else
                 {
-                    var innerBindings = new List<MemberBinding>();
-                    var memberInit = BindProperties(source, Expression.Property(sourceItem, property.Name), property.FieldType);
+                    var memberInit = BindProperties(Expression.Property(sourceItem, property.Name), property.FieldType);
                     var innerMemberBind = Expression.Bind(property, memberInit);
                     bindings.Add(innerMemberBind);
                 }
             }
+        }
+
+        private static MethodCallExpression BindEnumerable(Expression sourceItem, FieldInfo property)
+        {
+            var sourceCollection = Expression.Property(sourceItem, property.Name);
+            var sourceElementType = sourceCollection.Type.GetGenericArguments().ElementAt(0);
+            var destinationElementType = property.FieldType.GetGenericArguments().ElementAt(0);
+
+            var source = Expression.Parameter(sourceElementType, String.Format("t{0}", _id));
+            _id++;
+
+            var destinationProperties = BindProperties(source, destinationElementType);
+            var selector = Expression.Lambda(destinationProperties, source);
+
+            var selectExpression = Expression.Call(
+                typeof(Enumerable),
+                "Select",
+                new Type[] { sourceElementType, destinationElementType },
+                sourceCollection,
+                selector);
+            return selectExpression;
         }
 
         private static void BindSystemTypeProperties(Type type, Expression sourceItem, List<MemberBinding> bindings)

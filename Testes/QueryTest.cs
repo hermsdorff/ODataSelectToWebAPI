@@ -6,8 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Testes
 {
-    using RuntimeSelectExpand;
+    using Newtonsoft.Json;
 
+    using RuntimeSelectExpand;
     using Testes.Fakes;
 
     [TestClass]
@@ -67,25 +68,36 @@ namespace Testes
         public void ExecuteQueryOverACollectionWithInnerCollection()
         {
             // arrange
-            const string Query = "$select=Name,Models/Name&$expand=Models";
+            const string Query = "$select=Name,Models/Name,Models/Id&$expand=Models";
             var parser = new ODataParser();
             var tree = parser.Parse(Query);
-            tree.Bind(typeof(Company));
+            tree.Bind(typeof(Product));
             tree.BuildType();
 
             var companies = new List<Product>
                 {
                     new Product
-                        { Name = "P1", Models = new List<Model>{new Model{ Id=1, Name="M1"}}}
+                        {
+                            Name = "P1",
+                            Models =
+                                new List<Model>
+                                    {
+                                        new Model { Id = 1, Name = "M1" }, 
+                                        new Model { Id = 2, Name = "M2" }
+                                    }
+                        }
                 };
 
             // act
             var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
 
+            var resultado = JsonConvert.SerializeObject(selection);
+
+
             // assert
-            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Company].Select(t0 => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t0.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t0.Owner.Name, Contact = new {Email:String}() {Email = t0.Owner.Contact.Email}}})";
+            const string expression =
+                "System.Collections.Generic.List`1[Testes.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = new List`1(t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name}))})";
             Assert.AreEqual(expression, selection.ToString());
         }
-        
     }
 }
