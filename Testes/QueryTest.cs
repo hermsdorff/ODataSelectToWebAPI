@@ -73,6 +73,9 @@ namespace Testes
             var tree = parser.Parse(Query);
             tree.Bind(typeof(Product));
             tree.BuildType();
+            tree = parser.Parse(Query);
+            tree.Bind(typeof(Product));
+            tree.BuildType();
 
             var companies = new List<Product>
                 {
@@ -90,9 +93,6 @@ namespace Testes
 
             // act
             var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
-
-            var resultado = JsonConvert.SerializeObject(selection);
-
 
             // assert
             const string expression =
