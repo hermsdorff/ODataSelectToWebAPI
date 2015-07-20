@@ -13,6 +13,11 @@ namespace TestOData.Controllers
 
         public string Valor { get; set; }
 
-        public Detalhe Detalhe { get; set; }
+        public List<Detalhe> Detalhes { get; set; }
+
+        public Entidade()
+        {
+            Detalhes = new List<Detalhe>();
+        }
     }
 }

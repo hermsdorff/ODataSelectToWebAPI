@@ -294,7 +294,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RuntimeSelectExpand\ODataSelectForWebAPI1.csproj">
+    <ProjectReference Include="..\ODataSelectForWebAPI1\ODataSelectForWebAPI1.csproj">
       <Project>{d318814c-6b7f-433d-bf99-f99c8817b93e}</Project>
       <Name>ODataSelectForWebAPI1</Name>
     </ProjectReference>

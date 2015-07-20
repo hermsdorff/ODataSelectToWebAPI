@@ -63,7 +63,7 @@
     <Compile Include="QueryTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RuntimeSelectExpand\ODataSelectForWebAPI1.csproj">
+    <ProjectReference Include="..\ODataSelectForWebAPI1\ODataSelectForWebAPI1.csproj">
       <Project>{D318814C-6B7F-433D-BF99-F99C8817B93E}</Project>
       <Name>ODataSelectForWebAPI1</Name>
     </ProjectReference>
