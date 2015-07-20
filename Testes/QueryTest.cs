@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Testes
+namespace Tests
 {
     using Newtonsoft.Json;
 
-    using RuntimeSelectExpand;
-    using Testes.Fakes;
+    using ODataSelectForWebAPI1;
+    using Tests.Fakes;
 
     [TestClass]
     public class QueryTest

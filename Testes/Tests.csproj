@@ -9,8 +9,8 @@
     <ProjectGuid>{437303C8-2DEA-4A5F-8AE0-71F77B064AF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testes</RootNamespace>
-    <AssemblyName>Testes</AssemblyName>
+    <RootNamespace>Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -63,9 +63,9 @@
     <Compile Include="QueryTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RuntimeSelectExpand\RuntimeSelectExpand.csproj">
+    <ProjectReference Include="..\RuntimeSelectExpand\ODataSelectForWebAPI1.csproj">
       <Project>{D318814C-6B7F-433D-BF99-F99C8817B93E}</Project>
-      <Name>RuntimeSelectExpand</Name>
+      <Name>ODataSelectForWebAPI1</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

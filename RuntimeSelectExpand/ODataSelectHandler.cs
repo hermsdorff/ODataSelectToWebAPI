@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RuntimeSelectExpand
+namespace ODataSelectForWebAPI1
 {
     public class ODataSelectHandler : DelegatingHandler 
     {

@@ -1,4 +1,4 @@
-namespace RuntimeSelectExpand
+namespace ODataSelectForWebAPI1
 {
     using System;
     using System.Collections.Generic;

@@ -8,8 +8,8 @@
     <ProjectGuid>{D318814C-6B7F-433D-BF99-F99C8817B93E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RuntimeSelectExpand</RootNamespace>
-    <AssemblyName>RuntimeSelectExpand</AssemblyName>
+    <RootNamespace>ODataSelectForWebAPI1</RootNamespace>
+    <AssemblyName>ODataSelectForWebAPI1</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Testes
+namespace Tests
 {
-    using RuntimeSelectExpand;
+    using ODataSelectForWebAPI1;
 
-    using Testes.Fakes;
+    using Tests.Fakes;
 
     [TestClass]
     public class BuildingTypeTest

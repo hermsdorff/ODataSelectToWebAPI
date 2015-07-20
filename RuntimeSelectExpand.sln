@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuntimeSelectExpand", "RuntimeSelectExpand\RuntimeSelectExpand.csproj", "{D318814C-6B7F-433D-BF99-F99C8817B93E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSelectForWebAPI1", "RuntimeSelectExpand\ODataSelectForWebAPI1.csproj", "{D318814C-6B7F-433D-BF99-F99C8817B93E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testes", "Testes\Testes.csproj", "{437303C8-2DEA-4A5F-8AE0-71F77B064AF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Testes\Tests.csproj", "{437303C8-2DEA-4A5F-8AE0-71F77B064AF6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F1D786A-B82B-409C-9577-2A85BB2DC575}"
 	ProjectSection(SolutionItems) = preProject

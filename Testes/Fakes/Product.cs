@@ -1,4 +1,4 @@
-namespace Testes.Fakes
+namespace Tests.Fakes
 {
     using System.Collections.Generic;
 
