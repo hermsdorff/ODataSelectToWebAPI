@@ -12,6 +12,8 @@ namespace RuntimeSelectExpand
 
         public IExpressionTree Parse(string query)
         {
+            if (query.StartsWith("?")) query = query.Remove(0,1);
+            
             var parameters = query.Split('&');
             var tree = new ExpressionTree();
 

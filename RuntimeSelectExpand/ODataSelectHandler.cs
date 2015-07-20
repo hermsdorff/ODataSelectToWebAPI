@@ -13,7 +13,7 @@ namespace RuntimeSelectExpand
 {
     public class ODataSelectHandler : DelegatingHandler 
     {
-        [DebuggerStepThrough]
+//        [DebuggerStepThrough]
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (!HasSelectOrExpand(request)) return base.SendAsync(request, cancellationToken);
@@ -25,7 +25,7 @@ namespace RuntimeSelectExpand
                     if(!ValidResponse(response)) return response;
 
                     var lastResult = GetValueFromObjectContent(response.Content);
-                    if (!(lastResult is Queryable)) return response;
+                    if (!(lastResult is IQueryable)) return response;
 
                     var result = (lastResult as IQueryable<object>);
                     var parser = new ODataParser();
@@ -67,7 +67,7 @@ namespace RuntimeSelectExpand
         {
             var queryParams = request.RequestUri.ParseQueryString();
 
-            return queryParams.AllKeys.Any(k => k.StartsWith("$select=") || k.StartsWith("$expand="));
+            return queryParams.AllKeys.Any(k => k.Equals("$select") || k.Equals("$expand"));
         }
     }
 }

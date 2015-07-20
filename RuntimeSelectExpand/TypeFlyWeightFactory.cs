@@ -40,7 +40,7 @@ namespace RuntimeSelectExpand
 
                 if (!_builtTypes.ContainsKey(className))
                 {
-                    var typeBuilder = _moduleBuilder.DefineType(className, TypeAttributes.Public | TypeAttributes.Class);
+                    var typeBuilder = _moduleBuilder.DefineType(className, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable);
 
                     foreach (var field in fields)
                     {
