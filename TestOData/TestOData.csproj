@@ -166,6 +166,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\Detalhe.cs" />
     <Compile Include="Controllers\Entidade.cs" />
+    <Compile Include="Controllers\EnumStatus.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">

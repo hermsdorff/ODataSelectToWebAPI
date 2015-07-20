@@ -54,6 +54,7 @@
     <Compile Include="Fakes\Category.cs" />
     <Compile Include="Fakes\Company.cs" />
     <Compile Include="Fakes\Contact.cs" />
+    <Compile Include="Fakes\EnumStatus.cs" />
     <Compile Include="Fakes\Manufacturer.cs" />
     <Compile Include="Fakes\Model.cs" />
     <Compile Include="Fakes\Person.cs" />

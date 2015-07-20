@@ -75,6 +75,10 @@ namespace ODataSelectForWebAPI1
                 {
                     ElementType = type;
                 }
+                else if (type.IsEnum)
+                {
+                    ElementType = type;
+                }
                 else
                 {
                     this.AddChildElements(type);

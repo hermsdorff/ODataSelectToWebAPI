@@ -60,6 +60,12 @@ namespace ODataSelectForWebAPI1
                     var innerMemberBind = Expression.Bind(property, member);
                     bindings.Add(innerMemberBind);
                 }
+                else if (property.FieldType.IsEnum)
+                {
+                    var propertyName = property.Name;
+                    var member = Expression.Bind(property, Expression.Property(sourceItem, propertyName));
+                    bindings.Add(member);
+                }
                 else
                 {
                     var memberInit = BindProperties(Expression.Property(sourceItem, property.Name), property.FieldType);

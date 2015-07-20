@@ -1,13 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
-    using Newtonsoft.Json;
-
     using ODataSelectForWebAPI1;
     using Tests.Fakes;
 
@@ -18,7 +14,7 @@ namespace Tests
         public void ExecuteQueryOverACollection()
         {
             // arrange
-            const string Query = "$select=Id";
+            const string Query = "$select=Id,Status";
             var parser = new ODataParser();
             var tree = parser.Parse(Query);
             tree.Bind(typeof(Category));
@@ -27,16 +23,16 @@ namespace Tests
             var categories = new List<Category>
                 {
                     new Category
-                        { Id = 1, Name = "C1", Products = new List<Product> { new Product { Id = 1, Name = "P1" } } },
+                        { Id = 1, Name = "C1", Status = EnumStatus.OK, Products = new List<Product> { new Product { Id = 1, Name = "P1" } } },
                     new Category
-                        { Id = 2, Name = "C2", Products = new List<Product> { new Product { Id = 2, Name = "P2" } } }
+                        { Id = 2, Name = "C2", Status = EnumStatus.Error, Products = new List<Product> { new Product { Id = 2, Name = "P2" } } }
                 };
 
             // act
             var selection = DynamicSelection.Select(categories.AsQueryable(), tree.QueryType);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Category].Select(t0 => new {Id:Int32}() {Id = t0.Id})";
+            const string expression = "System.Collections.Generic.List`1[Tests.Fakes.Category].Select(t0 => new {Id:Int32;Status:EnumStatus}() {Id = t0.Id, Status = t0.Status})";
             Assert.AreEqual(expression, selection.ToString());
         }
 
@@ -60,7 +56,7 @@ namespace Tests
             var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Testes.Fakes.Company].Select(t0 => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t0.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t0.Owner.Name, Contact = new {Email:String}() {Email = t0.Owner.Contact.Email}}})";
+            const string expression = "System.Collections.Generic.List`1[Tests.Fakes.Company].Select(t0 => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t0.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t0.Owner.Name, Contact = new {Email:String}() {Email = t0.Owner.Contact.Email}}})";
             Assert.AreEqual(expression, selection.ToString());
         }
 
@@ -96,7 +92,7 @@ namespace Tests
 
             // assert
             const string expression =
-                "System.Collections.Generic.List`1[Testes.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = new List`1(t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name}))})";
+                "System.Collections.Generic.List`1[Tests.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = new List`1(t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name}))})";
             Assert.AreEqual(expression, selection.ToString());
         }
     }

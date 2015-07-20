@@ -16,7 +16,7 @@ namespace TestOData.Controllers
         {
             if (_entidades.Count == 0)
             {
-                _entidades.Add(new Entidade { Id = 1, Chave = "Chave1", Valor = "Valor1" });
+                _entidades.Add(new Entidade { Id = 1, Chave = "Chave1", Valor = "Valor1", Status = EnumStatus.Error});
                 _entidades.Add(new Entidade { Id = 2, Chave = "Chave2", Valor = "Valor2" });
 
                 _entidades[0].Detalhes.Add(new Detalhe { Id = 1, Valor = "Detalhe1" });
