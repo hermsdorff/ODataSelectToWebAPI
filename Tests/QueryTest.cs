@@ -69,9 +69,6 @@ namespace Tests
             var tree = parser.Parse(Query);
             tree.Bind(typeof(Product));
             tree.BuildType();
-            tree = parser.Parse(Query);
-            tree.Bind(typeof(Product));
-            tree.BuildType();
 
             var companies = new List<Product>
                 {

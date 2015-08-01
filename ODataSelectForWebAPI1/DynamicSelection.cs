@@ -42,7 +42,7 @@ namespace ODataSelectForWebAPI1
             Expression selector = Expression.Lambda(BindProperties(sourceItem, type), sourceItem);
 
             return Expression.Call(typeof(Queryable), "Select", new Type[] { source.ElementType, type },
-                             Expression.Constant(source), selector);
+                             source.Expression, selector);
         }
 
         private static void BindNonSystemTypeProperties(Type type, Expression sourceItem, List<MemberBinding> bindings)
@@ -53,11 +53,12 @@ namespace ODataSelectForWebAPI1
                 {
                     var selectExpression = BindEnumerable(sourceItem, property);
 
-                    var member = Expression.New(
-                        property.FieldType.GetConstructor(new[] { property.FieldType }),
-                        new [] { selectExpression });
+                    //var member = Expression.New(
+                    //    property.FieldType.GetConstructor(new[] { property.FieldType }),
+                    //    new [] { selectExpression });
 
-                    var innerMemberBind = Expression.Bind(property, member);
+                    var convertExpression = Expression.Convert(selectExpression, property.FieldType);
+                    var innerMemberBind = Expression.Bind(property, convertExpression);
                     bindings.Add(innerMemberBind);
                 }
                 else if (property.FieldType.IsEnum)

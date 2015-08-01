@@ -65,7 +65,7 @@ namespace ODataSelectForWebAPI1
                 if (!_builtTypes.ContainsKey(className))
                 {
                     var collectionType = New(fields);
-                    var collection = typeof(List<>).MakeGenericType(collectionType);
+                    var collection = typeof(IEnumerable<>).MakeGenericType(collectionType);
                     _builtTypes.Add(className, collection);
                 }
 

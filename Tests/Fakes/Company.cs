@@ -7,6 +7,7 @@ namespace Tests.Fakes
 {
     public class Company
     {
+        public int Id { get; set; }
         public Person Owner { get; set; }
         public string Name { get; set; }
     }

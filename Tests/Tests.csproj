@@ -82,6 +82,13 @@
     <Compile Include="Fakes\Model.cs" />
     <Compile Include="Fakes\Person.cs" />
     <Compile Include="Fakes\Product.cs" />
+    <Compile Include="Mapeamento\CategoryMap.cs" />
+    <Compile Include="Mapeamento\CompanyMap.cs" />
+    <Compile Include="Mapeamento\ContactMap.cs" />
+    <Compile Include="Mapeamento\ManufacturerMap.cs" />
+    <Compile Include="Mapeamento\ModelMap.cs" />
+    <Compile Include="Mapeamento\PersonMap.cs" />
+    <Compile Include="Mapeamento\ProductMap.cs" />
     <Compile Include="Mapeamento\TestContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryEntity.cs" />

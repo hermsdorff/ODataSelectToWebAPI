@@ -86,7 +86,7 @@ namespace Tests
             tree.BuildType();
 
             // assert   
-            Assert.AreEqual("{Models:List`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
+            Assert.AreEqual("{Models:IEnumerable`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual("{Models:List`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
+            Assert.AreEqual("{Models:IEnumerable`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
         }
     }
 }
