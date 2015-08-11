@@ -18,7 +18,7 @@ To use it just add this one on the WebApiConfig as the example above
       public static void Register(HttpConfiguration config)
       {
         //
-        // your configurations above...
+        // your configurations here...
         //
         
         // Add support to $select and $expand OData queries on your ApiControllers
