@@ -109,7 +109,7 @@ namespace Tests
 
             // assert
             const string expectedResult =
-                "System.Collections.Generic.List`1[Tests.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = new List`1(t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name}))})";
+                "[{\"Models\":[{\"Id\":1,\"Name\":\"M1\"},{\"Id\":2,\"Name\":\"M2\"}],\"Name\":\"P1\"}]";
             Assert.AreEqual(expectedResult, json);
         }
     }

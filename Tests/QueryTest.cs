@@ -89,7 +89,7 @@ namespace Tests
 
             // assert
             const string expression =
-                "System.Collections.Generic.List`1[Tests.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = new List`1(t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name}))})";
+                "System.Collections.Generic.List`1[Tests.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name})})";
             Assert.AreEqual(expression, selection.ToString());
         }
     }

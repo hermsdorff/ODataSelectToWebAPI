@@ -53,12 +53,7 @@ namespace ODataSelectForWebAPI1
                 {
                     var selectExpression = BindEnumerable(sourceItem, property);
 
-                    //var member = Expression.New(
-                    //    property.FieldType.GetConstructor(new[] { property.FieldType }),
-                    //    new [] { selectExpression });
-
-                    var convertExpression = Expression.Convert(selectExpression, property.FieldType);
-                    var innerMemberBind = Expression.Bind(property, convertExpression);
+                    var innerMemberBind = Expression.Bind(property, selectExpression);
                     bindings.Add(innerMemberBind);
                 }
                 else if (property.FieldType.IsEnum)
