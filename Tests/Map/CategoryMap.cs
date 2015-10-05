@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using Tests.Fakes;
-
-namespace Tests.Mapeamento
+﻿namespace Tests.Map
 {
+    using System.Data.Entity.ModelConfiguration;
+
+    using Tests.Fakes;
+
     class CategoryMap : EntityTypeConfiguration<Category>
     {
         public CategoryMap()

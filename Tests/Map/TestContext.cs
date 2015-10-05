@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using Tests.Fakes;
-
-namespace Tests.Mapeamento
+﻿namespace Tests.Map
 {
+    using System.Data.Common;
+    using System.Data.Entity;
+
+    using Tests.Fakes;
+
     public class TestDataContext : DbContext
     {
         public TestDataContext(DbConnection connection) : base(connection, true)
@@ -25,6 +21,7 @@ namespace Tests.Mapeamento
             modelBuilder.Configurations.Add(new CompanyMap());
             modelBuilder.Configurations.Add(new PersonMap());
             modelBuilder.Configurations.Add(new ContactMap());
+            modelBuilder.Configurations.Add(new AddressMap());
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -34,5 +31,6 @@ namespace Tests.Mapeamento
         public DbSet<Company> Companies { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

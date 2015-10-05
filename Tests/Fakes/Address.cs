@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Tests.Fakes
 {
-    public class Person
+    public class Address
     {
         public int Id { get; set; }
-        public Contact Contact { get; set; }
-        public string Name { get; set; }
-        public List<Address> Addresses { get; set; } 
+        public string Street { get; set; }
+        public string City { get; set; }
+        public Person Person { get; set; }
     }
 }

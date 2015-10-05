@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ODataSelectForWebAPI1
 {
-    using System.Collections;
     using System.Linq.Expressions;
     using System.Reflection;
 
-    public class DynamicSelection
+    public static class DynamicSelection
     {
         private static int _id;
         private static Object _lock = new Object();
@@ -86,7 +84,7 @@ namespace ODataSelectForWebAPI1
             var selectExpression = Expression.Call(
                 typeof(Enumerable),
                 "Select",
-                new Type[] { sourceElementType, destinationElementType },
+                new[] { sourceElementType, destinationElementType },
                 sourceCollection,
                 selector);
             return selectExpression;

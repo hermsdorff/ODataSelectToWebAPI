@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Common;
-using Tests.Mapeamento;
+
 using ODataSelectForWebAPI1;
 using Tests.Fakes;
 using Newtonsoft.Json;
 
 namespace Tests
 {
+    using Tests.Map;
+
     [TestClass]
     public class QueryEntity
     {
@@ -110,6 +112,40 @@ namespace Tests
             // assert
             const string expectedResult =
                 "[{\"Models\":[{\"Id\":1,\"Name\":\"M1\"},{\"Id\":2,\"Name\":\"M2\"}],\"Name\":\"P1\"}]";
+            Assert.AreEqual(expectedResult, json);
+        }
+
+        [TestMethod]
+        public void ExecuteQueryExpandingACollectionInsideNonCollectionProperty()
+        {
+            // arrange
+            DbConnection conn = DbConnectionFactory.CreateTransient();
+            var context = new TestDataContext(conn);
+
+            var company = new Company
+                { Id = 0, Name = "C1", Owner = new Person { Id = 0, Name = "P1", Addresses = new List<Address>() } };
+            var address = new Address { City = "Ct1", Person = company.Owner, Street = "St1" };
+            company.Owner.Addresses.Add(address);
+
+            context.Companies.Add(company);
+            context.SaveChanges();
+            
+            var companies = context.Companies.AsQueryable();
+
+            const string Query = "$expand=Owner/Addresses&$select=Name,Owner/Addresses/City";
+            //const string Query = "$select=Name";
+            var parser = new ODataParser();
+            var tree = parser.Parse(Query);
+            tree.Bind(typeof(Company));
+            tree.BuildType();
+
+            // act
+            var selection = DynamicSelection.Select(companies, tree.QueryType);
+            var json = JsonConvert.SerializeObject(selection);
+
+            // assert
+            const string expectedResult =
+                "[{\"Owner\":{\"Addresses\":[{\"City\":\"Ct1\"}]},\"Name\":\"C1\"}]";
             Assert.AreEqual(expectedResult, json);
         }
     }

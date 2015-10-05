@@ -6,6 +6,8 @@ namespace ODataSelectForWebAPI1
 
     public class CollectionTree : ExpressionTree
     {
+        private bool _isCollection;
+
         public CollectionTree(string property): base(property)
         {
             
@@ -13,6 +15,12 @@ namespace ODataSelectForWebAPI1
 
         public override void BuildType()
         {
+            if(!_isCollection)
+            {
+                base.BuildType();
+                return;
+            }
+            
             var fields = new Dictionary<string, Type>();
 
             foreach (var item in Items.Where(i=>i.ElementType != typeof(void)))
@@ -28,9 +36,17 @@ namespace ODataSelectForWebAPI1
         {
             if (!type.Namespace.StartsWith("System.Collections"))
             {
-                ElementType = typeof(void);
+                if (Items.Count() > 0)
+                {
+                    base.Bind(type);
+                }
+                else
+                {
+                    ElementType = typeof(void);
+                }
                 return;
             }
+            _isCollection = true;
             var genericTypes = type.GetGenericArguments();
 
             if (Items.Count() == 0)
