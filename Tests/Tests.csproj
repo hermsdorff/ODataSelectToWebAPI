@@ -76,6 +76,7 @@
     <Compile Include="BuildingTypeTest.cs" />
     <Compile Include="Fakes\Address.cs" />
     <Compile Include="Fakes\Category.cs" />
+    <Compile Include="Fakes\CircularReference.cs" />
     <Compile Include="Fakes\Company.cs" />
     <Compile Include="Fakes\Contact.cs" />
     <Compile Include="Fakes\EnumStatus.cs" />

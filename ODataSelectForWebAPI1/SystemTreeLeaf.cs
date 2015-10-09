@@ -29,7 +29,7 @@ namespace ODataSelectForWebAPI1
             throw new NotImplementedException();
         }
 
-        public void Bind(Type type)
+        public void Bind(Type type, int depth = 1)
         {
             ElementType = type;
         }

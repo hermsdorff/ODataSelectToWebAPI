@@ -12,7 +12,7 @@ namespace ODataSelectForWebAPI1
         Type ElementType { get; }
         void AddProperty(string property);
         void AddCollection(string property);
-        void Bind(Type type);
+        void Bind(Type type, int depth = 1);
         void BuildType();
         Type QueryType { get; }
     }

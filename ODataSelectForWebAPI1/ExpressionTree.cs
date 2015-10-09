@@ -67,7 +67,7 @@ namespace ODataSelectForWebAPI1
             }
         }
 
-        public virtual void Bind(Type type)
+        public virtual void Bind(Type type, int depth = 1)
         {
             if (Items.Count() == 0)
             {
@@ -81,14 +81,22 @@ namespace ODataSelectForWebAPI1
                 }
                 else
                 {
-                    this.AddChildElements(type);
+                    if(depth < 0)
+                    {
+                        Ignore = true;
+                        return;
+                    }
+                    this.AddChildElements(type, depth - 1);
                 }
             }
             else
             {
-                this.BindChildElements(type);
+                if (depth < 0) return;
+                this.BindChildElements(type, depth);
             }
         }
+
+        protected bool Ignore { get; set; }
 
         public virtual void BuildType()
         {
@@ -112,24 +120,24 @@ namespace ODataSelectForWebAPI1
 
         public Type QueryType { get; protected set; }
 
-        protected void BindChildElements(Type type)
+        protected void BindChildElements(Type type, int depth)
         {
             foreach (var item in this.Items)
             {
                 var property = type.GetProperty(item.Name);
-                item.Bind(property != null ? type.GetProperty(item.Name).PropertyType : typeof(object));
+                item.Bind(property != null ? type.GetProperty(item.Name).PropertyType : typeof(object), depth);
             }
         }
 
-        protected void AddChildElements(Type type)
+        protected void AddChildElements(Type type, int depth)
         {
             foreach (var propertyInfo in type.GetProperties())
             {
                 if (!propertyInfo.PropertyType.Namespace.StartsWith("System.Collection"))
                 {
                     var item = new ExpressionTree(propertyInfo.Name);
-                    this._items.Add(item);
-                    item.Bind(propertyInfo.PropertyType);
+                    item.Bind(propertyInfo.PropertyType, depth);
+                    if (!item.Ignore) this._items.Add(item);
                 }
             }
         }

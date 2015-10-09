@@ -104,5 +104,21 @@ namespace Tests
             // assert
             Assert.AreEqual("{Models:IEnumerable`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
         }
+
+        [TestMethod]
+        public void BuildTypeWithCircularReference()
+        {
+            // arrange
+            const string Query = "$select=Name,Parent";
+            var parser = new ODataParser();
+            var tree = parser.Parse(Query);
+            tree.Bind(typeof(CircularReference));
+
+            // act
+            tree.BuildType();
+
+            // assert
+            Assert.AreEqual("{Name:String;Parent:{Name:String;Parent:{Name:String}}}", tree.QueryType.Name);
+        }
     }
 }

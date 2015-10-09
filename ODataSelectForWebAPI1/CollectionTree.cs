@@ -32,13 +32,13 @@ namespace ODataSelectForWebAPI1
             QueryType = FlyWeightTypeFactory.NewCollection(fields);
         }
 
-        public override void Bind(Type type)
+        public override void Bind(Type type, int depth)
         {
             if (!type.Namespace.StartsWith("System.Collections"))
             {
                 if (Items.Count() > 0)
                 {
-                    base.Bind(type);
+                    base.Bind(type, depth);
                 }
                 else
                 {
@@ -57,11 +57,11 @@ namespace ODataSelectForWebAPI1
                     {
                         var item = new SystemTreeLeaf();
                         _items.Add(item);
-                        item.Bind(genericTypes[0]);
+                        item.Bind(genericTypes[0], depth);
                     }
                     else
                     {
-                        AddChildElements(genericTypes[0]);
+                        AddChildElements(genericTypes[0], depth);
                     }
                 }
             }
@@ -69,7 +69,7 @@ namespace ODataSelectForWebAPI1
             {
                 if (genericTypes.Count() == 1)
                 {
-                    BindChildElements(genericTypes[0]);
+                    BindChildElements(genericTypes[0], depth);
                 }
             }
         }
