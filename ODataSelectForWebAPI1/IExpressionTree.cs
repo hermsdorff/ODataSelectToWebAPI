@@ -14,6 +14,6 @@ namespace ODataSelectForWebAPI1
         void AddCollection(string property);
         void Bind(Type type, int depth = 1);
         void BuildType();
-        Type QueryType { get; }
+        KeyValuePair<string,Type> QueryType { get; }  
     }
 }

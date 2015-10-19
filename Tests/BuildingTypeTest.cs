@@ -24,7 +24,7 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual(tree.QueryType, typeof(int));
+            Assert.AreEqual(tree.QueryType.Key, typeof(int).Name);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual(tree.QueryType, typeof(int));
+            Assert.AreEqual(tree.QueryType.Key, typeof(int).Name);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual("{Id:Int32;Name:String}", tree.QueryType.Name);
+            Assert.AreEqual("{Id:Int32;Name:String}", tree.QueryType.Key);
         }
 
         [TestMethod]
@@ -70,7 +70,14 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual("{Id:Int32;Manufacturer:{Id:Int32;Name:String};Name:String}", tree.QueryType.Name);
+            Assert.AreEqual(3, tree.QueryType.Value.GetFields().Length);
+
+            Assert.AreEqual(typeof(Int32), tree.QueryType.Value.GetField("Id").FieldType);
+            Assert.AreEqual(typeof(String), tree.QueryType.Value.GetField("Name").FieldType);
+
+            var manufacturer = tree.QueryType.Value.GetField("Manufacturer").FieldType;
+            Assert.AreEqual(typeof(Int32), manufacturer.GetField("Id").FieldType);
+            Assert.AreEqual(typeof(String), manufacturer.GetField("Name").FieldType);
         }
 
         [TestMethod]
@@ -86,7 +93,13 @@ namespace Tests
             tree.BuildType();
 
             // assert   
-            Assert.AreEqual("{Models:IEnumerable`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
+            Assert.IsNotNull(tree.QueryType.Value.GetField("Models").FieldType.GetInterface("System.Collections.IEnumerable"));
+
+            var modelType = tree.QueryType.Value.GetField("Models").FieldType.GetGenericArguments();
+            Assert.AreEqual(1, modelType.Length);
+            
+            Assert.AreEqual(typeof(Int32), modelType[0].GetField("Id").FieldType);
+            Assert.AreEqual(typeof(string), modelType[0].GetField("Name").FieldType);
         }
 
         [TestMethod]
@@ -102,7 +115,13 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual("{Models:IEnumerable`1<{Id:Int32;Name:String}>}", tree.QueryType.Name);
+            Assert.IsNotNull(tree.QueryType.Value.GetField("Models").FieldType.GetInterface("System.Collections.IEnumerable"));
+            
+            var genericType = tree.QueryType.Value.GetField("Models").FieldType.GetGenericArguments();
+            Assert.AreEqual(1, genericType.Length);
+            
+            Assert.AreEqual(typeof(Int32), genericType[0].GetField("Id").FieldType);
+            Assert.AreEqual(typeof(string), genericType[0].GetField("Name").FieldType);
         }
 
         [TestMethod]
@@ -118,7 +137,15 @@ namespace Tests
             tree.BuildType();
 
             // assert
-            Assert.AreEqual("{Name:String;Parent:{Name:String;Parent:{Name:String}}}", tree.QueryType.Name);
+            Assert.AreEqual(typeof(string), tree.QueryType.Value.GetField("Name").FieldType);
+            
+            var parent = tree.QueryType.Value.GetField("Parent").FieldType;
+            Assert.AreEqual(2, parent.GetFields().Length);
+            Assert.AreEqual(typeof(string), parent.GetField("Name").FieldType);
+
+            var innerParent = parent.GetField("Parent").FieldType;
+            Assert.AreEqual(1, innerParent.GetFields().Length);
+            Assert.AreEqual(typeof(string), innerParent.GetField("Name").FieldType);
         }
     }
 }

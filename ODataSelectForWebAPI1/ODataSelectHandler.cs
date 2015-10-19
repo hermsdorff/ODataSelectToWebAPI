@@ -33,7 +33,7 @@ namespace ODataSelectForWebAPI1
                     tree.Bind(result.ElementType);
                     tree.BuildType();
 
-                    var selection = DynamicSelection.Select(result, tree.QueryType);
+                    var selection = DynamicSelection.Select(result, tree.QueryType.Value);
 
                     response.Content = CreateObjectContent(
                         selection, ((ObjectContent)response.Content).Formatter, response.Content.Headers.ContentType);

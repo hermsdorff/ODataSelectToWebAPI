@@ -36,10 +36,10 @@ namespace ODataSelectForWebAPI1
 
         public void BuildType()
         {
-            QueryType = ElementType;
+            QueryType = new KeyValuePair<string, Type>(ElementType.Name, ElementType);
         }
 
-        public Type QueryType { get; protected set; }
+        public KeyValuePair<string,Type> QueryType { get; protected set; }
 
         #endregion
     }

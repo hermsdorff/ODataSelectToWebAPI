@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
+    using System;
+
     using ODataSelectForWebAPI1;
     using Tests.Fakes;
 
@@ -29,11 +31,14 @@ namespace Tests
                 };
 
             // act
-            var selection = DynamicSelection.Select(categories.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(categories.AsQueryable(), tree.QueryType.Value);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Tests.Fakes.Category].Select(t0 => new {Id:Int32;Status:EnumStatus}() {Id = t0.Id, Status = t0.Status})";
-            Assert.AreEqual(expression, selection.ToString());
+            var elementType = selection.AsQueryable().ElementType.GetFields();
+            
+            Assert.AreEqual(2, elementType.Length);
+            Assert.AreEqual(typeof(Int32), selection.AsQueryable().ElementType.GetField("Id").FieldType);
+            Assert.AreEqual(typeof(EnumStatus), selection.AsQueryable().ElementType.GetField("Status").FieldType);
         }
 
         [TestMethod]
@@ -53,11 +58,21 @@ namespace Tests
                 };
 
             // act
-            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType.Value);
 
             // assert
-            const string expression = "System.Collections.Generic.List`1[Tests.Fakes.Company].Select(t0 => new {Name:String;Owner:{Contact:{Email:String};Name:String}}() {Name = t0.Name, Owner = new {Contact:{Email:String};Name:String}() {Name = t0.Owner.Name, Contact = new {Email:String}() {Email = t0.Owner.Contact.Email}}})";
-            Assert.AreEqual(expression, selection.ToString());
+            var elementType = selection.ElementType.GetFields();
+            Assert.AreEqual(2, elementType.Length);
+
+            Assert.AreEqual(typeof(string), selection.ElementType.GetField("Name").FieldType);
+            
+            var owner = selection.AsQueryable().ElementType.GetField("Owner").FieldType;
+            Assert.AreEqual(2, owner.GetFields().Length);
+            Assert.AreEqual(typeof(string), owner.GetField("Name").FieldType);
+
+            var contact = owner.GetField("Contact").FieldType;
+            Assert.AreEqual(1, contact.GetFields().Length);
+            Assert.AreEqual(typeof(string), contact.GetField("Email").FieldType);
         }
 
         [TestMethod]
@@ -85,12 +100,21 @@ namespace Tests
                 };
 
             // act
-            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType.Value);
 
             // assert
-            const string expression =
-                "System.Collections.Generic.List`1[Tests.Fakes.Product].Select(t0 => new {Name = t0.Name, Models = t0.Models.Select(t1 => new {Id:Int32;Name:String}() {Id = t1.Id, Name = t1.Name})})";
-            Assert.AreEqual(expression, selection.ToString());
+            var elementType = selection.ElementType;
+            Assert.AreEqual(2, elementType.GetFields().Length);
+            Assert.AreEqual(typeof(string), elementType.GetField("Name").FieldType);
+
+            var models = elementType.GetField("Models").FieldType;
+            Assert.IsNotNull(models.GetInterface("System.Collections.IEnumerable"));
+            
+            var genericArgument = models.GetGenericArguments();
+            Assert.AreEqual(1, genericArgument.Length);
+            Assert.AreEqual(2, genericArgument[0].GetFields().Length);
+            Assert.AreEqual(typeof(string), genericArgument[0].GetField("Name").FieldType);
+            Assert.AreEqual(typeof(Int32), genericArgument[0].GetField("Id").FieldType);
         }
     }
 }

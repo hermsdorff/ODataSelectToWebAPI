@@ -102,7 +102,7 @@ namespace ODataSelectForWebAPI1
         {
             if (Items.Count() == 0)
             {
-                QueryType = ElementType;
+                QueryType = new KeyValuePair<string, Type>(ElementType.Name, ElementType);
             }
             else
             {
@@ -111,14 +111,14 @@ namespace ODataSelectForWebAPI1
                 foreach (var item in Items.Where(i=>i.ElementType != typeof(void)))
                 {
                     item.BuildType();
-                    fields.Add(item.Name, item.QueryType);
+                    fields.Add(item.Name, item.QueryType.Value);
                 }
 
                 QueryType = FlyWeightTypeFactory.New(fields);
             }
         }
 
-        public Type QueryType { get; protected set; }
+        public KeyValuePair<string, Type> QueryType { get; protected set; }
 
         protected void BindChildElements(Type type, int depth)
         {

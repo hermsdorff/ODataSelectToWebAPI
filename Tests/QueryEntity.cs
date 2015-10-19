@@ -40,7 +40,7 @@ namespace Tests
             var categories = context.Categories;
 
             // act
-            var selection = DynamicSelection.Select(categories.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(categories.AsQueryable(), tree.QueryType.Value);
             var json = JsonConvert.SerializeObject(selection);
 
             // assert
@@ -67,7 +67,7 @@ namespace Tests
             var companies = context.Companies;
 
             // act
-            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(companies.AsQueryable(), tree.QueryType.Value);
             var json = JsonConvert.SerializeObject(selection);
             
             // assert
@@ -106,7 +106,7 @@ namespace Tests
             var products = context.Products;
 
             // act
-            var selection = DynamicSelection.Select(products.AsQueryable(), tree.QueryType);
+            var selection = DynamicSelection.Select(products.AsQueryable(), tree.QueryType.Value);
             var json = JsonConvert.SerializeObject(selection);
 
             // assert
@@ -140,7 +140,7 @@ namespace Tests
             tree.BuildType();
 
             // act
-            var selection = DynamicSelection.Select(companies, tree.QueryType);
+            var selection = DynamicSelection.Select(companies, tree.QueryType.Value);
             var json = JsonConvert.SerializeObject(selection);
 
             // assert

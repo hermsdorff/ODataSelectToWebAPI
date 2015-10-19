@@ -18,11 +18,11 @@ namespace ODataSelectForWebAPI1
             _assemblyName, AssemblyBuilderAccess.Run);
         private static ModuleBuilder _moduleBuilder = _assemblyBuilder.DefineDynamicModule("DynamicTypeModule");
 
-        public static Type New(Dictionary<string, Type> fields)
+        public static KeyValuePair<string, Type> New(Dictionary<string, Type> fields)
         {
             lock (_lockObject)
             {
-                var className = String.Format(
+                var classKeyName = String.Format(
                     "{{{0}}}",
                     String.Join(
                         ";",
@@ -38,8 +38,10 @@ namespace ODataSelectForWebAPI1
                                         String.Join("|", field.Value.GetGenericArguments().Select(s => s.Name)))
                                     : field.Value.Name))));
 
-                if (!_builtTypes.ContainsKey(className))
+                if (!_builtTypes.ContainsKey(classKeyName))
                 {
+                    var className = String.Format("DynamicType_{0}", _builtTypes.Count);
+
                     var typeBuilder = _moduleBuilder.DefineType(className, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable);
 
                     foreach (var field in fields)
@@ -47,29 +49,30 @@ namespace ODataSelectForWebAPI1
                         typeBuilder.DefineField(field.Key, field.Value, FieldAttributes.Public);
                     }
 
-                    _builtTypes.Add(className, typeBuilder.CreateType());
+                    _builtTypes.Add(classKeyName, typeBuilder.CreateType());
                 }
 
-                return _builtTypes[className];
+                return new KeyValuePair<string, Type>(classKeyName, _builtTypes[classKeyName]);
             }
         }
 
-        public static Type NewCollection(Dictionary<string, Type> fields)
+        public static KeyValuePair<string, Type> NewCollection(Dictionary<string, Type> fields)
         {
             lock (_lockObject)
             {
-                var className = String.Format(
+                var classKeyName = String.Format(
                     "({{{0}}})",
                     String.Join(";", fields.Select(field => String.Format("{0}:{1}", field.Key, field.Value.Name))));
 
-                if (!_builtTypes.ContainsKey(className))
+                if (!_builtTypes.ContainsKey(classKeyName))
                 {
                     var collectionType = New(fields);
-                    var collection = typeof(IEnumerable<>).MakeGenericType(collectionType);
-                    _builtTypes.Add(className, collection);
+                    var collection = typeof(IEnumerable<>).MakeGenericType(collectionType.Value);
+
+                    _builtTypes.Add(classKeyName, collection);
                 }
 
-                return _builtTypes[className];
+                return new KeyValuePair<string, Type>(classKeyName, _builtTypes[classKeyName]);
             }
         }
     }

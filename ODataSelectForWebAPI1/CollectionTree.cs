@@ -26,7 +26,7 @@ namespace ODataSelectForWebAPI1
             foreach (var item in Items.Where(i=>i.ElementType != typeof(void)))
             {
                 item.BuildType();
-                fields.Add(item.Name, item.QueryType);
+                fields.Add(item.Name, item.QueryType.Value);
             }
 
             QueryType = FlyWeightTypeFactory.NewCollection(fields);
