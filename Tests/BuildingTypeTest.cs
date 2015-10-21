@@ -76,6 +76,7 @@ namespace Tests
             Assert.AreEqual(typeof(String), tree.QueryType.Value.GetField("Name").FieldType);
 
             var manufacturer = tree.QueryType.Value.GetField("Manufacturer").FieldType;
+            Assert.AreEqual(2, manufacturer.GetFields().Length);
             Assert.AreEqual(typeof(Int32), manufacturer.GetField("Id").FieldType);
             Assert.AreEqual(typeof(String), manufacturer.GetField("Name").FieldType);
         }
@@ -97,7 +98,8 @@ namespace Tests
 
             var modelType = tree.QueryType.Value.GetField("Models").FieldType.GetGenericArguments();
             Assert.AreEqual(1, modelType.Length);
-            
+
+            Assert.AreEqual(2, modelType[0].GetFields().Length);
             Assert.AreEqual(typeof(Int32), modelType[0].GetField("Id").FieldType);
             Assert.AreEqual(typeof(string), modelType[0].GetField("Name").FieldType);
         }
@@ -120,6 +122,7 @@ namespace Tests
             var genericType = tree.QueryType.Value.GetField("Models").FieldType.GetGenericArguments();
             Assert.AreEqual(1, genericType.Length);
             
+            Assert.AreEqual(2, genericType[0].GetFields().Length);
             Assert.AreEqual(typeof(Int32), genericType[0].GetField("Id").FieldType);
             Assert.AreEqual(typeof(string), genericType[0].GetField("Name").FieldType);
         }

@@ -81,7 +81,7 @@ namespace ODataSelectForWebAPI1
                 }
                 else
                 {
-                    if(depth < 0)
+                    if (depth < 0)
                     {
                         Ignore = true;
                         return;
@@ -108,7 +108,7 @@ namespace ODataSelectForWebAPI1
             {
                 var fields = new Dictionary<string, Type>();
 
-                foreach (var item in Items.Where(i=>i.ElementType != typeof(void)))
+                foreach (var item in Items.Where(i => i.ElementType != typeof(void)))
                 {
                     item.BuildType();
                     fields.Add(item.Name, item.QueryType.Value);
@@ -131,7 +131,9 @@ namespace ODataSelectForWebAPI1
 
         protected void AddChildElements(Type type, int depth)
         {
-            foreach (var propertyInfo in type.GetProperties())
+            foreach (
+                var propertyInfo in
+                    type.GetProperties().Where(p => !Attribute.IsDefined(p, typeof(IgnoreDataMemberAttribute))))
             {
                 if (!propertyInfo.PropertyType.Namespace.StartsWith("System.Collection"))
                 {
