@@ -10,7 +10,7 @@
         {
             HasKey(p => p.Id);
             Property(c => c.Name);
-            HasRequired(c => c.Owner);
+            HasOptional(c => c.Owner);
         }
     }
 }

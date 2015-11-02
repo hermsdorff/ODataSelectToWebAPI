@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -62,8 +63,17 @@ namespace ODataSelectForWebAPI1
                 }
                 else
                 {
-                    var memberInit = BindProperties(Expression.Property(sourceItem, property.Name), property.FieldType);
-                    var innerMemberBind = Expression.Bind(property, memberInit);
+                    var item = Expression.Property(sourceItem, property.Name);
+                    var memberInit = BindProperties(item, property.FieldType);
+
+                    var nullTest = Expression.Condition(
+                        Expression.NotEqual(
+                            Expression.Constant(null, item.Type), 
+                            item), 
+                        memberInit, 
+                        Expression.Constant(null, property.FieldType));
+
+                    var innerMemberBind = Expression.Bind(property, nullTest);
                     bindings.Add(innerMemberBind);
                 }
             }
