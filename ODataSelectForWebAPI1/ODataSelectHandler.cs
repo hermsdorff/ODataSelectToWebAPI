@@ -13,7 +13,7 @@ namespace ODataSelectForWebAPI1
 {
     public class ODataSelectHandler : DelegatingHandler 
     {
-//        [DebuggerStepThrough]
+        [DebuggerStepThrough]
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (!HasSelectOrExpand(request)) return base.SendAsync(request, cancellationToken);
