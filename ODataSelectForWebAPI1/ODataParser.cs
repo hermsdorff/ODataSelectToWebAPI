@@ -31,6 +31,9 @@ namespace ODataSelectForWebAPI1
             var expandParameter = expandParameters.Split(',');
             expandParameter[0] = expandParameter[0].Replace(ExpandCommand, String.Empty);
 
+            if (expandParameter.Any(p => p.EndsWith("/")))
+                throw new ArgumentException("Invalid OData $expand field");
+
             foreach (var param in expandParameter.OrderBy(o => o))
             {
                 tree.AddCollection(param);
@@ -44,6 +47,9 @@ namespace ODataSelectForWebAPI1
 
             var selectParameter = selectParameters.Split(',');
             selectParameter[0] = selectParameter[0].Replace(SelectCommand, String.Empty);
+
+            if (selectParameter.Any(p => p.EndsWith("/"))) 
+                throw new ArgumentException("Invalid OData $select field");
 
             foreach (var param in selectParameter.OrderBy(o => o))
             {
