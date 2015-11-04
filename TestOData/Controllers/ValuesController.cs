@@ -8,6 +8,10 @@ using System.Web.Http.OData.Query;
 
 namespace TestOData.Controllers
 {
+    using System.Web.Http.Filters;
+
+    using ODataSelectForWebAPI1;
+
     public class ValuesController : ApiController
     {
         public static List<Entidade> _entidades = new List<Entidade>();
@@ -28,6 +32,7 @@ namespace TestOData.Controllers
 
         // GET api/values
         [Queryable(AllowedQueryOptions=AllowedQueryOptions.All)]
+        [ODataSelect(DefaultMinimalistObject = true)]
         public IQueryable<Entidade> Get()
         {
             return _entidades.AsQueryable(); ;
