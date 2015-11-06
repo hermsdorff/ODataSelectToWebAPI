@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ODataSelectForWebAPI1
 {
-    using System.Web.Http;
-    using System.Web.Http.Dispatcher;
-
     public class ODataSelectHandler : DelegatingHandler 
     {
-        //[DebuggerStepThrough]
+        [DebuggerStepThrough]
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return base.SendAsync(request, cancellationToken).ContinueWith(
@@ -24,7 +18,10 @@ namespace ODataSelectForWebAPI1
                 {
                     var response = t.Result;
 
-                    bool minimalist = response.RequestMessage.Properties.ContainsKey(ODataSelectAttribute.MinimalistObject) && (bool)response.RequestMessage.Properties[ODataSelectAttribute.MinimalistObject];
+                    bool minimalist = 
+                        response.RequestMessage != null && response.RequestMessage.Properties != null
+                        && response.RequestMessage.Properties.ContainsKey(ODataSelectAttribute.MinimalistObject) 
+                        && (bool)response.RequestMessage.Properties[ODataSelectAttribute.MinimalistObject];
 
                     if(!minimalist && !HasSelectOrExpand(request)) return response;
 
