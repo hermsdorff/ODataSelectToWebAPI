@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
@@ -8,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace ODataSelectForWebAPI1
 {
+    using System.Web;
+
     public class ODataSelectHandler : DelegatingHandler 
     {
-        [DebuggerStepThrough]
+        //[DebuggerStepThrough]
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return base.SendAsync(request, cancellationToken).ContinueWith(
@@ -32,7 +33,7 @@ namespace ODataSelectForWebAPI1
 
                     var result = (lastResult as IQueryable<object>);
                     var parser = new ODataParser();
-                    var tree = parser.Parse(request.RequestUri.Query);
+                    var tree = parser.Parse(HttpUtility.UrlDecode(request.RequestUri.Query));
                     tree.Bind(result.ElementType);
                     tree.BuildType();
 
