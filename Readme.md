@@ -1,6 +1,6 @@
 # OData Select To WebApi 1 #
 
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/hermsdorff/ODataSelectToWebAPI)](https://ci.appveyor.com/api/projects/status/github/hermsdorff/ODataSelectToWebAPI)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/hermsdorff/ODataSelectToWebAPI)](https://ci.appveyor.com/project/hermsdorff/odataselecttowebapi)
 [![NuGet version](https://badge.fury.io/nu/ODataSelectForWebAPI1.svg)](http://badge.fury.io/nu/ODataSelectForWebAPI1)
 
 Add support to $select and $expand odata queries to Microsoft OData version running on WebApi 1.
