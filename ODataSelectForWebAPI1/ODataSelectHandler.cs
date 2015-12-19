@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 namespace ODataSelectForWebAPI1
 {
     using System;
+    using System.Diagnostics;
     using System.Web;
 
     public class ODataSelectHandler : DelegatingHandler 
     {
-        //[DebuggerStepThrough]
+        [DebuggerStepThrough]
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return base.SendAsync(request, cancellationToken).ContinueWith(
