@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ODataSelectForWebAPI1
 {
+    using System;
     using System.Web;
 
     public class ODataSelectHandler : DelegatingHandler 
@@ -24,7 +25,11 @@ namespace ODataSelectForWebAPI1
                         && response.RequestMessage.Properties.ContainsKey(ODataSelectAttribute.MinimalistObject) 
                         && (bool)response.RequestMessage.Properties[ODataSelectAttribute.MinimalistObject];
 
-                    if(!minimalist && !HasSelectOrExpand(request)) return response;
+                    string defaultSelect = response.RequestMessage != null && response.RequestMessage.Properties != null
+                        && response.RequestMessage.Properties.ContainsKey(ODataSelectAttribute.DefaultSelectProp)
+                        ? (string)response.RequestMessage.Properties[ODataSelectAttribute.DefaultSelectProp] : String.Empty;
+
+                    if(!minimalist && !HasSelectOrExpand(request) && String.IsNullOrEmpty(defaultSelect)) return response;
 
                     if(!ValidResponse(response)) return response;
 
@@ -33,7 +38,9 @@ namespace ODataSelectForWebAPI1
 
                     var result = (lastResult as IQueryable<object>);
                     var parser = new ODataParser();
-                    var tree = parser.Parse(HttpUtility.UrlDecode(request.RequestUri.Query));
+                    var query = HttpUtility.UrlDecode(request.RequestUri.Query);
+                    var tree = parser.Parse(String.IsNullOrEmpty(query)? defaultSelect: query);
+
                     tree.Bind(result.ElementType);
                     tree.BuildType();
 

@@ -32,7 +32,7 @@ namespace TestOData.Controllers
 
         // GET api/values
         [Queryable(AllowedQueryOptions=AllowedQueryOptions.All)]
-        [ODataSelect(DefaultMinimalistObject = true)]
+        [ODataSelect(DefaultSelect="$select=Chave,Valor")]
         public IQueryable<Entidade> Get()
         {
             return _entidades.AsQueryable(); ;
