@@ -48,6 +48,7 @@ ODataSelectToWebAPI allow you to change the default behavior of a controller wit
 
 **This changes only the default behaviour (requests without $select or $expand query)**. In case of requests with $select or $expand fields, the response will be according the query in the querystring.
 
+### DefaultMinimalistObject ###
 with `ODataSelect` attribute it's possible configure the action to return a minimalist version of the object as a default behaviour.
 
 Minimalist version means only primitive type properties and primitive types of the it´s aggregated objects excluding all collections.
@@ -65,3 +66,22 @@ Example of usage:
 	}
 
 with this attribute a query with no OData $select or $expand queries will return a basic version of the `TestEntity` with only it´s primitive type properties and the primitive type of it´s aggregated objects.
+
+### DefaultSelect ###
+with `ODataSelect` attribute it's possible configure the action to return a specific version of the object as a default behaviour.
+
+if the request have no $select or $expand expression, the ODataSelectHandler will use the DefaultSelect value to select object properties.
+
+Example of usage:
+	
+	public class TestController : ApiController
+	{
+		[HttpGet]
+		[ODataSelect(DefaultSelect = "$select=Key,Value,Id)]
+		public IQueryable<TestEntity> GetEntities()
+		{
+			// your code to return the entity IQueryable collection here
+		}
+	}
+
+with this attribute a query with no OData $select or $expand queries will return a version of the `TestEntity` the `DefaultSelect` parameter informed on the attribute.
