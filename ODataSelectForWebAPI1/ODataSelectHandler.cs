@@ -40,7 +40,7 @@ namespace ODataSelectForWebAPI1
                     var result = (lastResult as IQueryable<object>);
                     var parser = new ODataParser();
                     var query = HttpUtility.UrlDecode(request.RequestUri.Query);
-                    var tree = parser.Parse(String.IsNullOrEmpty(query)? defaultSelect: query);
+                    var tree = parser.Parse(HasSelectOrExpand(request)? query: defaultSelect);
 
                     tree.Bind(result.ElementType);
                     tree.BuildType();
