@@ -11,7 +11,7 @@ namespace ODataSelectForWebAPI1
         public bool DefaultMinimalistObject { get; set; }
         public string DefaultSelect { get; set; }
 
-        [DebuggerStepThrough]
+        //[DebuggerStepThrough]
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
             actionExecutedContext.Request.Properties.Add(MinimalistObject, DefaultMinimalistObject);
