@@ -14,7 +14,14 @@ namespace ODataSelectForWebAPI1
         //[DebuggerStepThrough]
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
+            if (actionExecutedContext.Request.Properties.ContainsKey(MinimalistObject))
+                actionExecutedContext.Request.Properties.Remove(MinimalistObject);
+
             actionExecutedContext.Request.Properties.Add(MinimalistObject, DefaultMinimalistObject);
+
+            if (actionExecutedContext.Request.Properties.ContainsKey(DefaultSelectProp))
+                actionExecutedContext.Request.Properties.Remove(DefaultSelectProp);
+
             actionExecutedContext.Request.Properties.Add(DefaultSelectProp, DefaultSelect);
 
             base.OnActionExecuted(actionExecutedContext);
